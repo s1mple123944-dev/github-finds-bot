@@ -1,0 +1,19 @@
+{
+  "repo": "wangzan101/Mika",
+  "url": "https://github.com/wangzan101/Mika",
+  "title": "Mika — AI-агент, который сам работает в приложениях на Android",
+  "category": "app",
+  "text": "<b>🤖 Mika — AI-агент, который сам работает в приложениях на твоём Android</b>\n\nПишешь одну фразу, а Mika сама открывает нужные приложения и выполняет задачу. Работает на отдельном скрытом экране в фоне, так что телефоном можно пользоваться дальше.\n\n<b>Что умеет:</b>\n• управляет приложениями и сайтами за тебя, есть встроенный десктопный браузер\n• запускает скрипты в локальной Linux-песочнице (Alpine)\n• работает с твоим ключом: OpenAI-совместимые API, Anthropic, Gemini, DeepSeek, Kimi, OpenRouter\n• своего сервера нет: запросы идут только к выбранному тобой провайдеру\n• перед важными действиями спрашивает подтверждение\n\n⚡ <b>Установка:</b> скачать APK из Releases. Нужен Android 13+ (лучше 14+), для песочницы — arm64\n⚠️ Публичная бета, что-то может работать нестабильно\n⭐ 2.6k+ · Kotlin · Apache-2.0\n\n#android #ai #агенты\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/wangzan101/Mika/HEAD/docs/media/wechat-group.gif"
+    },
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/wangzan101/Mika/HEAD/docs/media/xhs-summary.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/wangzan101/Mika",
+  "created_at": "2026-11-24T19:47:00+03:00"
+}

@@ -10,6 +10,7 @@
     python reel.py                 — собрать из 3 последних постов в out/
     python reel.py --send          — собрать и прислать в Telegram
     python reel.py --posts a.json,b.json,c.json   — выбрать посты вручную
+    python reel.py --send-file out/x.mp4 [--posts …] — прислать готовый ролик (из Remotion)
 
 Нужны: Python 3.8+, Pillow, ffmpeg.
 """
@@ -661,11 +662,33 @@ def caption(infos, channel_link=None):
     return "\n".join(lines)
 
 
+def send_file(path, posts, total=None):
+    """Отправляет готовый ролик (например, из Remotion) владельцу с описанием."""
+    cfg = bot.load_config()
+    owner = os.environ.get("TG_OWNER_ID") or (open(OWNER_FILE).read().strip() if os.path.exists(OWNER_FILE) else "")
+    if not owner:
+        sys.exit("Не знаю, кому слать ролик: нет state/owner_chat_id.txt")
+    infos = [extract(p) for p in posts]
+    with open(path, "rb") as f:
+        data = f.read()
+    fields = {"chat_id": owner, "width": W, "height": H, "supports_streaming": "true",
+              "caption": "🎬 Ролик для TikTok / Reels готов. Описание — следующим сообщением."}
+    if total:
+        fields["duration"] = round(total)
+    msg = bot.tg(cfg, "sendVideo", fields,
+                 files={"video": (os.path.basename(path), data, "video/mp4")}, timeout=300)
+    bot.tg(cfg, "sendMessage", {"chat_id": owner, "text": caption(infos),
+                                "reply_parameters": json.dumps({"message_id": msg["message_id"]})})
+    bot.log("Ролик отправлен владельцу:", path)
+
+
 def main():
     names = None
     if "--posts" in sys.argv:
         names = sys.argv[sys.argv.index("--posts") + 1].split(",")
     posts = pick_posts(names)
+    if "--send-file" in sys.argv:
+        return send_file(sys.argv[sys.argv.index("--send-file") + 1], posts)
     if len(posts) < 3:
         sys.exit(f"Для ролика нужно 3 поста, есть {len(posts)} — пропускаю.")
     key = [p["_file"] for p in posts]

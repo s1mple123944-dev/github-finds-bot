@@ -1,0 +1,1 @@
+Источник: https://github.com/remotion-dev/skills (commit a3f4098), официальные Agent Skills от Remotion. Не редактировать — обновлять через /remotion-upgrade.

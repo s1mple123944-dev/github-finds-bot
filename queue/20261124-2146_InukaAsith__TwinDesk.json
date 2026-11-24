@@ -1,0 +1,23 @@
+{
+  "repo": "InukaAsith/TwinDesk",
+  "url": "https://github.com/InukaAsith/TwinDesk",
+  "title": "TwinDesk — все компьютеры и телефон как один рабочий стол",
+  "category": "cross-device",
+  "text": "<b>🖥📱 TwinDesk — все компьютеры и телефон как один рабочий стол</b>\n\nОткрытая замена Microsoft Phone Link, KDE Connect, Intel Unison и Synergy в одном приложении — и не только для Windows. Без аккаунта и облака.\n\n<b>Что умеет:</b>\n• Одна мышь и клавиатура на все компьютеры — и даже на телефоне\n• Экран и приложения Android-телефона в окне на ПК, звонки, SMS, уведомления и фото\n• Файлы, общий буфер обмена, камера телефона\n• iPhone и iPad подключаются без установки: <code>twindesk.local</code> в Safari\n• USB, Bluetooth, Wi-Fi Direct, а если устройства в разных сетях — Tailscale\n\n💻 <b>Платформы:</b> Windows · macOS · Linux · Android · iOS (AltStore или браузер)\n⚡ <b>Установка:</b> релиз .exe / .dmg / .apk, на Mac — <code>brew install --cask inukaasith/twindesk/twindesk</code>\n⭐ 4.5k · JavaScript · GPL-3.0\n\n#crossdevice #phonelink #opensource\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/InukaAsith/TwinDesk/HEAD/.github/assets/v30-hero-desks.jpg"
+    },
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/InukaAsith/TwinDesk/HEAD/.github/assets/v30-banner.jpg"
+    },
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/InukaAsith/TwinDesk/HEAD/.github/assets/v30-android.jpg"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/InukaAsith/TwinDesk",
+  "created_at": "2026-11-24T21:46:46+03:00"
+}

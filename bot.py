@@ -35,6 +35,7 @@ FAILED = os.path.join(BASE, "failed")
 DELETE = os.path.join(BASE, "delete")
 CONFIG_PATH = os.path.join(BASE, "config.json")
 CHAT_FILE = os.path.join(BASE, "state", "chat_id.txt")
+OWNER_FILE = os.path.join(BASE, "state", "owner_chat_id.txt")  # личка владельца (для роликов)
 
 UA = "github-finds-bot/1.0"
 MAX_UPLOAD = 50 * 1024 * 1024      # лимит Bot API на загрузку файла
@@ -95,6 +96,8 @@ def detect_chat_once(cfg):
     cfg["chat_id"] = chat
     os.makedirs(os.path.dirname(CHAT_FILE), exist_ok=True)
     with open(CHAT_FILE, "w", encoding="utf-8") as f:
+        f.write(chat)
+    with open(OWNER_FILE, "w", encoding="utf-8") as f:
         f.write(chat)
     tg(cfg, "sendMessage", {"chat_id": chat,
        "text": "✅ Подключено. Сюда будут приходить находки с GitHub."})

@@ -66,7 +66,19 @@ def draw(pose="idle"):
     # корпус
     d.rounded_rectangle(_s((120, 140, 480, 590)), radius=120 * S, fill=BODY_DARK)
     d.rounded_rectangle(_s((128, 140, 472, 574)), radius=114 * S, fill=BODY)
-    d.rounded_rectangle(_s((160, 158, 360, 200)), radius=20 * S, fill=BODY_LIGHT)
+    # повязка-хатимаки (белая с красным кругом), обрезана по форме головы
+    band = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    bd = ImageDraw.Draw(band)
+    bd.rectangle(_s((110, 166, 490, 206)), fill=(245, 243, 238))
+    bd.rectangle(_s((110, 200, 490, 206)), fill=(214, 208, 200))
+    bd.ellipse(_s((280, 168, 320, 204)), fill=(214, 40, 40))
+    bmask = Image.new("L", im.size, 0)
+    ImageDraw.Draw(bmask).rounded_rectangle(_s((128, 140, 472, 574)), radius=114 * S, fill=255)
+    im.paste(band, (0, 0), Image.composite(band.getchannel("A"), Image.new("L", im.size, 0), bmask))
+    # концы узла развеваются справа
+    d.polygon(_s((470, 178, 540, 150, 560, 168, 482, 196)), fill=(245, 243, 238))
+    d.polygon(_s((470, 190, 530, 222, 516, 240, 466, 204)), fill=(232, 228, 220))
+    d.ellipse(_s((456, 176, 486, 206)), fill=(235, 232, 226))
     # экран-лицо
     d.rounded_rectangle(_s((165, 215, 435, 430)), radius=60 * S, fill=SCREEN)
     # лицо по позе
@@ -110,8 +122,8 @@ def draw(pose="idle"):
     if pose == "idle":
         _magnifier(d, 470, 470, angle_deg=60, r=40)
     if pose == "surprised":
-        d.rounded_rectangle(_s((520, 120, 548, 220)), radius=12 * S, fill=(255, 214, 102))
-        d.ellipse(_s((520, 236, 548, 264)), fill=(255, 214, 102))
+        d.rounded_rectangle(_s((52, 120, 80, 220)), radius=12 * S, fill=(255, 214, 102))
+        d.ellipse(_s((52, 236, 80, 264)), fill=(255, 214, 102))
     if pose == "think":
         d.ellipse(_s((490, 110, 570, 190)), fill=WHITE)
         d.ellipse(_s((462, 200, 486, 224)), fill=WHITE)

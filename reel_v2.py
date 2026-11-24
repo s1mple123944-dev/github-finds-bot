@@ -18,6 +18,7 @@ import tempfile
 from PIL import Image, ImageDraw, ImageFilter
 
 import bot
+import japan_bg
 import mascot
 import reel
 from reel import (ACCENT, BG, BORDER, CARD, FG, FPS, H, MUTED, W, ease, fade, font,
@@ -250,8 +251,12 @@ def telegram_phone(infos, thumbs, avatar):
 
 class SceneV2(reel.Scene):
     sfx = ()   # [(время от начала сцены, "whoosh"|"pop")]
+    petals = None
+    t0 = 0.0
 
     def overlay(self, f, t):
+        if self.petals:
+            self.petals.draw(f, self.t0 + t)
         if self.captions:
             self.captions.draw(f, t)
         return f
@@ -432,7 +437,7 @@ def background_v2():
 def build(posts, script, voice_dir, out_path, media_loader=reel.load_media):
     tmp = tempfile.mkdtemp(prefix="reel2_")
     try:
-        base = reel.chrome(background_v2())
+        base = reel.chrome(japan_bg.background())
         mas = mascot.all_poses()
         segs = script["segments"]
         infos = [reel.extract(p) for p in posts]
@@ -455,8 +460,12 @@ def build(posts, script, voice_dir, out_path, media_loader=reel.load_media):
             scenes.append(FindV2(base, i + 1, infos[i], medias[i], seg.get("points") or infos[i]["points"],
                                  voiced[i + 1][2], mas))
         scenes.append(CtaV2(base, voiced[4][2], infos, telegram_phone(infos, thumbs, mas["happy"]), mas))
+        petals = japan_bg.Petals()
+        tacc = 0.0
         for sc, seg, v in zip(scenes, segs, voiced):
             sc.captions = CaptionsV2(seg["show"], LEAD, LEAD + v[1])
+            sc.petals, sc.t0 = petals, tacc
+            tacc += sc.duration
         total = sum(s.duration for s in scenes)
         # видео
         parts, t0, sfx_events = [], 0.0, []

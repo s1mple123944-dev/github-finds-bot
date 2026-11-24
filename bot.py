@@ -60,7 +60,7 @@ def log(*args):
 # ---------------------------------------------------------------- config
 
 def load_config():
-    cfg = {"bot_token": "", "chat_id": "", "shorten_links": True,
+    cfg = {"bot_token": "", "chat_id": "", "shorten_links": False,
            "poll_seconds": 60, "disable_notification": False}
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, encoding="utf-8") as f:
@@ -203,7 +203,9 @@ def visible_len(text_html):
 
 
 def render(post, link):
-    a = f'<a href="{html.escape(link, quote=True)}">{html.escape(link)}</a>'
+    # Скрытая ссылка: в тексте видно «owner/repo», а ведёт она на GitHub
+    label = post.get("link_text") or post.get("repo") or link
+    a = f'<a href="{html.escape(link, quote=True)}">{html.escape(label)}</a>'
     text = post.get("text", "")
     if "{link}" in text:
         return text.replace("{link}", a)
@@ -232,7 +234,7 @@ def send_media(cfg, item, caption):
 
 def send_post(cfg, post):
     link = post["url"]
-    if cfg.get("shorten_links", True):
+    if cfg.get("shorten_links", False):
         link = shorten(link)
     full = render(post, link)
 
@@ -240,7 +242,7 @@ def send_post(cfg, post):
     if visible_len(full) > CAPTION_LIMIT:
         # длинный текст: под медиа — заголовок и ссылка, полный текст отдельным сообщением
         title = html.escape(post.get("title", post.get("repo", "")))
-        caption = f"<b>{title}</b>\n\n🔗 " + render({"text": "{link}"}, link)
+        caption = f"<b>{title}</b>\n\n🔗 " + render({"text": "{link}", "repo": post.get("repo")}, link)
         tail = full
 
     candidates = list(post.get("media", []))

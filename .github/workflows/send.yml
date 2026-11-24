@@ -1,0 +1,41 @@
+name: Send posts
+
+# Срабатывает, когда Claude кладёт новый пост в queue/,
+# и раз в 3 часа на всякий случай (если что-то не ушло).
+on:
+  push:
+    paths: ["queue/**"]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */3 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: send-posts
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Send queued posts to Telegram
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: python3 bot.py --once
+
+      - name: Save state (sent/, failed/, chat_id)
+        if: always()
+        run: |
+          git config user.name "github-finds-bot"
+          git config user.email "github-finds-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "bot: отправлены посты [skip ci]"
+          git pull --rebase
+          git push

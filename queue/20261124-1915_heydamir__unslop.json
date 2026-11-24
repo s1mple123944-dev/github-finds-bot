@@ -1,0 +1,15 @@
+{
+  "repo": "heydamir/unslop",
+  "url": "https://github.com/heydamir/unslop",
+  "title": "unslop — скилл для Claude, который убирает «нейросетевой» вид из UI",
+  "category": "ai-skill",
+  "text": "<b>🧹 unslop — скилл для Claude, который убирает «нейросетевой» вид из интерфейса</b>\n\nЗнакомая картина: навайбкодил приложение, а оно выглядит как сотня других AI-проектов. unslop превращает такой UI в продуманный дизайн со своим характером.\n\n<b>Как работает:</b>\n• сначала аудит: находит все признаки «слопа» и предлагает направление ещё до правок\n• затем проходы по порядку: отступы, цвет, иконки, тексты, шрифты, вёрстка, анимации\n• может сгенерировать визуал через fal, Replicate или OpenAI (перед платной генерацией спрашивает)\n• записывает короткое видео «было → стало»\n\nПодходит для Next.js, React, Vue, Svelte, Tailwind и обычного HTML/CSS.\n\n⚡ <b>Установка:</b> склонировать репозиторий, скопировать папку <code>skills/unslop</code> в <code>~/.claude/skills</code> и вызвать <code>/unslop</code>\n⭐ 3k+ звёзд за первый месяц · лицензия CC BY 4.0\n\n#claude #skills #ui\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/heydamir/unslop/HEAD/skills/unslop/references/refs/story-dashboard-frames.webp"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/heydamir/unslop",
+  "created_at": "2026-11-24T19:15:00+03:00"
+}

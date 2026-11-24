@@ -273,10 +273,100 @@ def progress(frame, t_global, total):
     d.rectangle((0, 0, int(W * t_global / total), 9), fill=ACCENT + (255,))
 
 
+# ------------------------------------------------------------------ субтитры
+
+def word_timings(text, start, end):
+    """Раскладывает слова по времени речи пропорционально длине (+ паузы на знаках)."""
+    words = []
+    for w in text.split():
+        if w in ("—", "–", "-") and words:
+            words[-1] += " " + w          # тире не отдельным словом
+        else:
+            words.append(w)
+    weights = []
+    for w in words:
+        wt = len(w.strip("«»—-,.!?:")) + 2
+        if w[-1:] in ".!?":
+            wt += 6
+        elif w[-1:] in ",:—" or w == "—":
+            wt += 3
+        weights.append(wt)
+    total, t, out = sum(weights) or 1, start, []
+    for w, wt in zip(words, weights):
+        d = (end - start) * wt / total
+        out.append((t, t + d, w))
+        t += d
+    return out
+
+
+class Captions:
+    """Крупные субтитры по 2–4 слова, текущее слово подсвечено."""
+
+    def __init__(self, timings, size=66, max_w=None):
+        self.timings = timings
+        self.fnt = font("Black", size)
+        self.max_w = max_w or (TEXT_R - TEXT_X)
+        d = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+        self.chunks, cur = [], []
+        for i, (a, b, w) in enumerate(timings):
+            test = " ".join(x[2] for x in cur + [(a, b, w)])
+            if cur and (d.textlength(test, font=self.fnt) > self.max_w or len(cur) >= 4
+                        or cur[-1][2][-1:] in ".!?,:"):
+                self.chunks.append(cur)
+                cur = []
+            cur.append((a, b, w))
+        if cur:
+            self.chunks.append(cur)
+        self.cache = {}
+
+    def layer(self, ci, wi):
+        key = (ci, wi)
+        if key not in self.cache:
+            chunk = self.chunks[ci]
+            d = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+            space = d.textlength(" ", font=self.fnt) * 1.8
+            widths = [d.textlength(w, font=self.fnt) for _, _, w in chunk]
+            asc, desc = self.fnt.getmetrics()
+            wtot = int(sum(widths) + space * (len(chunk) - 1)) + 40
+            im = Image.new("RGBA", (wtot, asc + desc + 30), (0, 0, 0, 0))
+            dd = ImageDraw.Draw(im)
+            x = 20
+            for j, ((_, _, w), ww) in enumerate(zip(chunk, widths)):
+                if j == wi:
+                    dd.rounded_rectangle((x - 12, 6, x + ww + 12, asc + desc + 22), radius=16, fill=ACCENT + (255,))
+                    dd.text((x, 12), w, font=self.fnt, fill=BG)
+                else:
+                    dd.text((x, 12), w, font=self.fnt, fill=FG, stroke_width=4, stroke_fill=(0, 0, 0, 200))
+                x += ww + space
+            self.cache[key] = im
+        return self.cache[key]
+
+    def draw(self, f, t, cy):
+        for ci, chunk in enumerate(self.chunks):
+            if chunk[0][0] <= t < (self.chunks[ci + 1][0][0] if ci + 1 < len(self.chunks) else chunk[-1][1] + 0.3):
+                wi = max(j for j, (a, _, _) in enumerate(chunk) if a <= t or j == 0)
+                lay = self.layer(ci, wi)
+                f.alpha_composite(lay, (int((W - lay.width) / 2), int(cy - lay.height / 2)))
+                return
+
+
 # ------------------------------------------------------------------ сцены
 
 class Scene:
     duration = 1.0
+    captions = None
+    caption_y = 1560
+
+    def with_voice(self, dur, captions, caption_y=None):
+        self.duration, self.captions = dur, captions
+        if caption_y:
+            self.caption_y = caption_y
+        return self
+
+    def overlay(self, f, t):
+        if self.captions:
+            self.captions.draw(f, t, self.caption_y)
+        return f
 
     def frame(self, t):
         raise NotImplementedError
@@ -368,8 +458,13 @@ class Find(Scene):
             y = self.media_y + (1 - mp) * 80
             put(f, self.shadow, MEDIA_X - 60, y - 60, mp)
             put(f, card, MEDIA_X, y, mp)
-        # пункты
+        # пункты (с озвучкой их заменяют субтитры)
         y = self.media_y + MEDIA_H + 56
+        if self.captions:
+            if self.plat:
+                a = ease((t - 0.6) / 0.35)
+                put(f, self.plat, TEXT_X, y + (1 - a) * 30, a)
+            return f
         for i, lay in enumerate(self.points):
             a = ease((t - 1.0 - i * 0.7) / 0.35)
             off = (1 - a) * 40
@@ -385,7 +480,7 @@ class Find(Scene):
 class Cta(Scene):
     duration = CTA_S
 
-    def __init__(self, base, infos):
+    def __init__(self, base, infos, tg_line="Все ссылки — в Telegram"):
         self.base = base
         d = ImageDraw.Draw(Image.new("RGB", (1, 1)))
         self.q = text_layer(["Какая зашла?"], font("Black", 104), FG)
@@ -402,7 +497,7 @@ class Cta(Scene):
             label = wrap(rd, info["name"], nf, row.width - 130, 1)[0]
             rd.text((104, 22), label, font=nf, fill=FG)
             self.rows.append(row)
-        self.tg1 = text_layer(["Все ссылки — в Telegram"], font("SemiBold", 46), MUTED)
+        self.tg1 = text_layer([tg_line], font("SemiBold", 46), MUTED)
         self.tg2 = pill("GitHub Finder", font("Black", 64), BG, ACCENT, pad=(40, 18))
         self.save = text_layer(["Сохрани, чтобы не потерять"], font("Medium", 40), MUTED)
 
@@ -438,7 +533,7 @@ def render_scene(scene, path, t0, total):
          "-pix_fmt", "yuv420p", "-r", str(FPS), tmp_path], stdin=subprocess.PIPE)
     for i in range(n):
         t = i / FPS
-        fr = scene.frame(t)
+        fr = scene.overlay(scene.frame(t), t)
         progress(fr, t0 + t, total)
         proc.stdin.write(fr.convert("RGB").tobytes())
     proc.stdin.close()
@@ -473,6 +568,83 @@ def build(posts, out_path, media_loader=load_media):
         part = out_path[:-4] + ".part.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
                         "-c", "copy", "-movflags", "+faststart", part], check=True)
+        os.replace(part, out_path)
+        return infos, total
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _dur(path):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                          "-of", "default=nw=1:nk=1", path], capture_output=True, text=True, check=True)
+    return float(out.stdout.strip())
+
+
+def prepare_voice(src, dst):
+    """Обрезает тишину по краям, 48 кГц стерео."""
+    trim = ("silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,"
+            "areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", trim, "-ar", "48000", "-ac", "2", dst], check=True)
+    return _dur(dst)
+
+
+def build_voiced(posts, segments, out_path, cta_line, media_loader=load_media):
+    """segments: [{"show": текст для субтитров, "audio": путь к озвучке}] — hook, 1, 2, 3, cta."""
+    LEAD, TAIL = 0.15, 0.35
+    tmp = tempfile.mkdtemp(prefix="reelv_")
+    try:
+        base = chrome(background())
+        infos = [extract(p) for p in posts]
+        voiced = []
+        for i, seg in enumerate(segments):
+            wav = os.path.join(tmp, f"v{i}.wav")
+            speech = prepare_voice(seg["audio"], wav)
+            dur = round((LEAD + speech + TAIL) * FPS) / FPS
+            voiced.append((wav, speech, dur, word_timings(seg["show"], LEAD, LEAD + speech)))
+        scenes = []
+        hook = Hook(base)
+        scenes.append(hook.with_voice(max(voiced[0][2], 2.0), Captions(voiced[0][3]), 1380))
+        for i, (p, info) in enumerate(zip(posts, infos)):
+            md = os.path.join(tmp, f"m{i}")
+            os.makedirs(md, exist_ok=True)
+            fs = Find(base, i + 1, info, media_loader(p, md))
+            v = voiced[i + 1]
+            scenes.append(fs.with_voice(v[2], Captions(v[3]), fs.media_y + MEDIA_H + 230))
+        cta = Cta(base, infos, cta_line)
+        scenes.append(cta.with_voice(max(voiced[4][2], 3.0), Captions(voiced[4][3]), 1440))
+        total = sum(sc.duration for sc in scenes)
+        # видео
+        parts, t0 = [], 0.0
+        for i, sc in enumerate(scenes):
+            path = os.path.join(tmp, f"s{i}.mp4")
+            bot.log(f"  сцена {i + 1}/{len(scenes)} ({sc.duration:.1f} с)…")
+            render_scene(sc, path, t0, total)
+            parts.append(path)
+            t0 += sc.duration
+        lst = os.path.join(tmp, "list.txt")
+        with open(lst, "w") as f:
+            f.writelines(f"file '{p}'\n" for p in parts)
+        video = os.path.join(tmp, "video.mp4")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
+                        "-c", "copy", video], check=True)
+        # звук: каждая озвучка ровно на длину своей сцены
+        alist = os.path.join(tmp, "alist.txt")
+        with open(alist, "w") as f:
+            for i, (sc, (wav, _, _, _)) in enumerate(zip(scenes, voiced)):
+                padded = os.path.join(tmp, f"a{i}.wav")
+                ms = int(LEAD * 1000)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", wav, "-af",
+                                f"adelay={ms}|{ms},apad=whole_dur={sc.duration}", "-t", str(sc.duration),
+                                "-ar", "48000", "-ac", "2", padded], check=True)
+                f.write(f"file '{padded}'\n")
+        audio = os.path.join(tmp, "audio.wav")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", alist,
+                        "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "48000", audio], check=True)
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        part = out_path[:-4] + ".part.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", audio, "-map", "0:v", "-map", "1:a",
+                        "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest",
+                        "-movflags", "+faststart", part], check=True)
         os.replace(part, out_path)
         return infos, total
     finally:

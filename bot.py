@@ -245,6 +245,54 @@ def render(post, link):
 
 # ---------------------------------------------------------------- sending
 
+MIN_W, MIN_H = 480, 270   # меньше этого — считаем низким качеством и не прикрепляем
+
+
+def media_size(data):
+    """Ширина и высота картинки/гифки/видео по заголовку файла (или None)."""
+    import struct
+    try:
+        if data[:6] in (b"GIF87a", b"GIF89a"):
+            return struct.unpack("<HH", data[6:10])
+        if data[:8] == b"\x89PNG\r\n\x1a\n":
+            return struct.unpack(">II", data[16:24])
+        if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+            chunk = data[12:16]
+            if chunk == b"VP8X":
+                w = int.from_bytes(data[24:27], "little") + 1
+                h = int.from_bytes(data[27:30], "little") + 1
+                return w, h
+            if chunk == b"VP8 ":
+                w, h = struct.unpack("<HH", data[26:30])
+                return w & 0x3FFF, h & 0x3FFF
+            if chunk == b"VP8L":
+                b = int.from_bytes(data[21:25], "little")
+                return (b & 0x3FFF) + 1, ((b >> 14) & 0x3FFF) + 1
+        if data[:2] == b"\xff\xd8":  # JPEG: ищем маркер SOF
+            i = 2
+            while i < len(data) - 9:
+                if data[i] != 0xFF:
+                    i += 1
+                    continue
+                marker = data[i + 1]
+                if marker in (0xC0, 0xC1, 0xC2):
+                    h, w = struct.unpack(">HH", data[i + 5:i + 9])
+                    return w, h
+                i += 2 + struct.unpack(">H", data[i + 2:i + 4])[0]
+        best = None  # MP4/MOV: размеры видеодорожки из tkhd
+        pos = data.find(b"tkhd")
+        while pos != -1:
+            off = pos + 4 + (88 if data[pos + 4] == 1 else 76)
+            w, h = struct.unpack(">II", data[off:off + 8])
+            w, h = w >> 16, h >> 16
+            if w and h and (not best or w * h > best[0] * best[1]):
+                best = (w, h)
+            pos = data.find(b"tkhd", pos + 4)
+        return best
+    except Exception:
+        return None
+
+
 def send_media(cfg, item, caption):
     kind = item.get("type", "photo")
     method, field = METHODS.get(kind, METHODS["photo"])
@@ -253,13 +301,17 @@ def send_media(cfg, item, caption):
             "disable_notification": str(cfg["disable_notification"]).lower()}
     if kind in ("video", "animation"):
         base["supports_streaming"] = "true"
-    # 1) пусть Telegram сам скачает по ссылке
-    try:
+    if item.get("skip_check"):  # карточка-превью GitHub: всегда нормального качества
         return tg(cfg, method, {**base, field: item["url"]})
-    except TgError as e:
-        log(f"  {kind} по ссылке не прошёл ({e}), качаю сам…")
-    # 2) скачиваем сами и загружаем файлом
+    # качаем сами, проверяем качество и только потом загружаем
     name, data, ctype = download(item["url"])
+    size = media_size(data)
+    if size and (size[0] < MIN_W or size[1] < MIN_H):
+        raise TgError(f"низкое качество {size[0]}×{size[1]} — не прикрепляю")
+    if not size and kind in ("video", "animation"):
+        raise TgError("не удалось проверить качество — не прикрепляю")
+    if kind == "animation" and len(data) < 60 * 1024:
+        raise TgError("слишком маленькая гифка — не прикрепляю")
     return tg(cfg, method, base, files={field: (name, data, ctype)}, timeout=300)
 
 
@@ -278,7 +330,7 @@ def send_post(cfg, post):
 
     candidates = list(post.get("media", []))
     if post.get("fallback_image"):
-        candidates.append({"type": "photo", "url": post["fallback_image"]})
+        candidates.append({"type": "photo", "url": post["fallback_image"], "skip_check": True})
 
     msg = None
     for item in candidates:

@@ -1,0 +1,35 @@
+name: Send outbox
+
+# Отправляет владельцу в личку видео из outbox/ (например, ролики с озвучкой).
+on:
+  push:
+    paths: ["outbox/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: send-posts
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send videos to owner
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+        run: python3 send_outbox.py
+      - name: Clean outbox
+        if: always()
+        run: |
+          git config user.name "github-finds-bot"
+          git config user.email "github-finds-bot@users.noreply.github.com"
+          git add -A outbox
+          git diff --cached --quiet && exit 0
+          git commit -m "bot: ролик отправлен, outbox очищен [skip ci]"
+          git pull --rebase
+          git push

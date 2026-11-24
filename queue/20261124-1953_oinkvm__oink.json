@@ -1,0 +1,15 @@
+{
+  "repo": "oinkvm/oink",
+  "url": "https://github.com/oinkvm/oink",
+  "title": "Oink — одна клавиатура и мышь на все Windows и Mac",
+  "category": "app",
+  "text": "<b>🐷 Oink — одна клавиатура и мышь на все твои Windows и Mac</b>\n\nСтоят рядом ноутбук на macOS и ПК на Windows? Oink связывает их в одну систему, и ты управляешь всеми компьютерами одной клавиатурой и мышью.\n\n<b>Что умеет:</b>\n• общая клавиатура и мышь для нескольких компьютеров\n• общий буфер обмена и перетаскивание файлов между устройствами\n• звук со всех компьютеров в одни наушники или колонки\n• сам находит устройства в локальной сети, без главного компьютера\n• весь трафик по умолчанию зашифрован\n\n💻 <b>Платформы:</b> Windows 10/11 (x64) · macOS 14.2+ (Apple Silicon и Intel)\n⚡ <b>Установка:</b> скачать .msi или .dmg из Releases на GitHub\n⭐ 2.9k · Rust · GPL-3.0\n\n#windows #macos #продуктивность\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/oinkvm/oink/HEAD/.github/assets/banner-light.png"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/oinkvm/oink",
+  "created_at": "2026-11-24T19:53:00+03:00"
+}

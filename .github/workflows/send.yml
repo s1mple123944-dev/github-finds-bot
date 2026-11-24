@@ -4,7 +4,7 @@ name: Send posts
 # и раз в 3 часа на всякий случай (если что-то не ушло).
 on:
   push:
-    paths: ["queue/**"]
+    paths: ["queue/**", "delete/**"]
   workflow_dispatch:
   schedule:
     - cron: "17 */3 * * *"

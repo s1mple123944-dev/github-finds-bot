@@ -32,6 +32,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 QUEUE = os.path.join(BASE, "queue")
 SENT = os.path.join(BASE, "sent")
 FAILED = os.path.join(BASE, "failed")
+DELETE = os.path.join(BASE, "delete")
 CONFIG_PATH = os.path.join(BASE, "config.json")
 CHAT_FILE = os.path.join(BASE, "state", "chat_id.txt")
 
@@ -355,9 +356,37 @@ def send_post(cfg, post):
     return msg
 
 
+def process_deletions(cfg):
+    """delete/*.json: {"message_id": 123, "chat_id": опционально, "sent_file": опционально}
+    — удаляет ранее опубликованный ботом пост."""
+    os.makedirs(DELETE, exist_ok=True)
+    for fname in sorted(f for f in os.listdir(DELETE) if f.endswith(".json")):
+        path = os.path.join(DELETE, fname)
+        try:
+            with open(path, encoding="utf-8") as f:
+                job = json.load(f)
+            chat = str(job.get("chat_id") or cfg["chat_id"])
+            tg(cfg, "deleteMessage", {"chat_id": chat, "message_id": job["message_id"]})
+            log(f"Удалён пост {job['message_id']} ({job.get('sent_file', '')})")
+            sf = job.get("sent_file") and os.path.join(SENT, job["sent_file"])
+            if sf and os.path.exists(sf):
+                with open(sf, encoding="utf-8") as f:
+                    post = json.load(f)
+                post["deleted_at"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+                with open(sf, "w", encoding="utf-8") as f:
+                    json.dump(post, f, ensure_ascii=False, indent=2)
+            os.remove(path)
+        except Exception as e:
+            log("  ✗ не удалось удалить:", e)
+            with open(os.path.join(FAILED, fname + ".error.txt"), "w", encoding="utf-8") as f:
+                f.write(traceback.format_exc())
+            shutil.move(path, os.path.join(FAILED, "delete_" + fname))
+
+
 def process_queue(cfg):
     for d in (QUEUE, SENT, FAILED):
         os.makedirs(d, exist_ok=True)
+    process_deletions(cfg)
     files = sorted(f for f in os.listdir(QUEUE) if f.endswith(".json"))
     for fname in files:
         path = os.path.join(QUEUE, fname)

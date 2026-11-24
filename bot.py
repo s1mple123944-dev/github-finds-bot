@@ -101,6 +101,37 @@ def detect_chat_once(cfg):
     return True
 
 
+def check_channel(cfg):
+    """Если бота сделали админом канала — дальше публикуем в канал.
+    Канал запоминается в state/chat_id.txt, тебе в личку приходит уведомление."""
+    found = None
+    for u in tg(cfg, "getUpdates", {"timeout": 0, "allowed_updates": '["my_chat_member","message"]'}):
+        m = u.get("my_chat_member")
+        if not m or m["chat"].get("type") != "channel":
+            continue
+        status = m["new_chat_member"]["status"]
+        can_post = m["new_chat_member"].get("can_post_messages", status == "creator")
+        if status in ("administrator", "creator") and can_post:
+            found = m["chat"]
+        elif str(m["chat"]["id"]) == str(found and found["id"]):
+            found = None
+    if not found or str(found["id"]) == cfg["chat_id"]:
+        return
+    old = cfg["chat_id"]
+    cfg["chat_id"] = str(found["id"])
+    os.makedirs(os.path.dirname(CHAT_FILE), exist_ok=True)
+    with open(CHAT_FILE, "w", encoding="utf-8") as f:
+        f.write(cfg["chat_id"])
+    title = found.get("title", "канал")
+    log(f"Нашёл канал «{title}» ({cfg['chat_id']}) — публикую туда")
+    if old:
+        try:
+            tg(cfg, "sendMessage", {"chat_id": old,
+               "text": f"✅ Я админ в канале «{title}». Дальше публикую находки туда."})
+        except Exception:
+            pass
+
+
 def wait_for_chat(cfg):
     """Ждёт /start от пользователя и запоминает его chat_id."""
     me = tg(cfg, "getMe", {})
@@ -324,6 +355,11 @@ def main():
         elif not detect_chat_once(cfg):
             sys.exit("chat_id не найден: открой своего бота в Telegram, нажми «Start» "
                      "и перезапусти (на GitHub: Actions → Send posts → Run workflow).")
+    if not os.environ.get("TG_CHAT_ID"):
+        try:
+            check_channel(cfg)
+        except Exception as e:
+            log("Проверка канала не удалась:", e)
     if "--once" in sys.argv:
         return process_queue(cfg)
     log(f"Бот запущен. Слежу за {QUEUE} каждые {cfg['poll_seconds']} с. Ctrl+C — выход.")

@@ -1,0 +1,19 @@
+{
+  "repo": "DIYgod/pinky",
+  "url": "https://github.com/DIYgod/pinky",
+  "title": "Pinky — ИИ-агент управляет вашим телефоном",
+  "category": "mcp",
+  "text": "<b>📱 Pinky — пусть ИИ-агент сам поработает в вашем телефоне</b>\n\nПодключаете iPhone или Android к компьютеру — и Claude Code, Codex, Cursor или любой MCP-агент начинает тапать, листать и печатать в приложениях. А вы держите всё под контролем.\n\n<b>Что умеет:</b>\n• Оплаты, переводы и другие рискованные шаги ждут вашего «Allow» — сам себе агент их не разрешит\n• Банки, кошельки и менеджеры паролей скрыты от агента, поля паролей и кодов ему недоступны\n• На Android 13+ агент работает на скрытом втором экране — ваш экран остаётся свободным\n• Можно перехватить управление в любой момент, есть задачи по расписанию\n• Сам подключается к Claude Code, Codex, Cursor, VS Code, Gemini CLI\n\n💻 <b>Платформы:</b> Windows · macOS · Linux + Android · iOS (17.4+)\n⚡ <b>Установка:</b> .exe / .dmg из релиза или <code>brew install --cask diygod/tap/pinky</code>\n⭐ 2.8k · Go · Apache-2.0\n\n#mcp #ai #смартфон\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/DIYgod/pinky/HEAD/assets/readme/demo.gif"
+    },
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/DIYgod/pinky/HEAD/assets/readme/card-approval.jpg"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/DIYgod/pinky",
+  "created_at": "2026-11-25T14:45:23+03:00"
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "OpenTodoApp/OpenTodo",
+  "url": "https://github.com/OpenTodoApp/OpenTodo",
+  "title": "OpenTodo — свой Todoist на своём сервере",
+  "category": "self-hosted",
+  "text": "<b>✅ OpenTodo — свой Todoist на своём сервере</b>\n\nМенеджер задач без подписки: ставишь на свой сервер или Raspberry Pi — и задачи синхронизируются между телефоном и компьютером.\n\n<b>Что умеет:</b>\n• Local-first: у каждого устройства полная копия задач, работает без сети и синхронизирует изменения потом\n• Быстрое добавление обычной фразой с датой и приоритетом, доски-канбан по проектам\n• Импорт из Todoist, TickTick, Things, Microsoft To Do, Apple Reminders\n• Сквозное шифрование, бэкапы на диск, S3 или WebDAV, без телеметрии\n• Один Go-бинарник и SQLite, около 20 МБ памяти; есть REST API и CalDAV\n\n💻 <b>Платформы:</b> браузер — любое устройство · Android · iOS/iPadOS · сервер: Docker или один бинарник\n⚡ <b>Установка:</b> <code>docker run -d -p 8080:8080 -v opentodo-data:/data ghcr.io/opentodoapp/opentodo:stable</code>\n⭐ 730 · TypeScript · AGPL-3.0\n\n#selfhosted #productivity #todo\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/OpenTodoApp/OpenTodo/HEAD/docs/screenshots/demo.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/OpenTodoApp/OpenTodo",
+  "created_at": "2026-11-25T21:40:14+03:00"
+}

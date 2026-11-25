@@ -1,0 +1,15 @@
+{
+  "repo": "xevrion/hatchzip",
+  "url": "https://github.com/xevrion/hatchzip",
+  "title": "HatchZip — распаковка архивов без лишнего места",
+  "category": "cli",
+  "text": "<b>📦 HatchZip — распаковка архивов, когда на диске почти нет места</b>\n\nАрхив на 180 ГБ, а внутри 200 ГБ? WinRAR и 7-Zip потребуют 380 ГБ свободного места. HatchZip хватит чуть больше 200: он распаковывает архив с конца и по ходу отрезает от него готовые части.\n\n<b>Что умеет:</b>\n• ZIP, 7z, RAR, tar (.gz/.bz2/.xz/.zst) и многотомные архивы .001, .002…\n• Заранее проверяет, что всё поместится, и держит запас свободного места\n• Можно прервать или пережить сбой — продолжит с того же места\n• Есть приложение, CLI и пункт в контекстном меню Windows\n• Архив по ходу удаляется; чтобы сохранить его, есть <code>--keep-archive</code>\n\n💻 <b>Платформы:</b> Windows · macOS · Linux\n⚡ <b>Установка:</b> .exe / .dmg / .deb из релиза или <code>brew install --cask xevrion/tap/hatchzip</code>\n⭐ 3.1k · Rust · Apache-2.0\n\n#утилиты #windows #macos\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/xevrion/hatchzip/HEAD/docs/media/hatchzip.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/xevrion/hatchzip",
+  "created_at": "2026-11-25T17:59:37+03:00"
+}

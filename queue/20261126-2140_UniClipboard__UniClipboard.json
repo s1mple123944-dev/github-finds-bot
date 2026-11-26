@@ -1,0 +1,15 @@
+{
+  "repo": "UniClipboard/UniClipboard",
+  "url": "https://github.com/UniClipboard/UniClipboard",
+  "title": "Unic — общий буфер обмена для ПК и телефона без облака",
+  "category": "cross-device",
+  "text": "<b>📋 Unic — общий буфер обмена для ПК и телефона без облака</b>\n\nСкопировал на компьютере — вставил на телефоне, и наоборот. Unic (бывший UniClipboard) синхронизирует буфер напрямую между вашими устройствами: шифрование end-to-end, без аккаунта и без чужих серверов.\n\n<b>Что умеет:</b>\n• Синхронизирует текст, картинки, файлы и целые папки\n• Работает в одной Wi-Fi-сети и через разные сети\n• История хранится только на ваших устройствах\n• Фоновая служба занимает ~14 МБ памяти в простое\n• CLI <code>unic</code>: отправка по ссылке или 6-значному коду без сопряжения, работает и по SSH\n\n💻 <b>Платформы:</b> Windows · macOS · Linux · Android · iOS (бета в TestFlight)\n⚡ <b>Установка:</b> установщики .exe / .dmg / .apk в GitHub Releases, iOS — через TestFlight, CLI — <code>npm install -g @uniclipboard/cli</code>\n⭐ 2.1k · Go · AGPL-3.0\n\n#crossdevice #буферобмена #opensource\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/UniClipboard/UniClipboard/HEAD/docs/assets/product-overview.png"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/UniClipboard/UniClipboard",
+  "created_at": "2026-11-26T21:40:41+03:00"
+}

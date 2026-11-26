@@ -1,0 +1,15 @@
+{
+  "repo": "libracoder/kiri",
+  "url": "https://github.com/libracoder/kiri",
+  "title": "Kiri — лёгкая замена Docker Desktop на Rust",
+  "category": "dev-tool",
+  "text": "<b>🐳 Kiri — лёгкая замена Docker Desktop на Rust</b>\n\nDocker Desktop долго стартует и ест память даже в простое. Kiri запускает те же образы и работает с привычными <code>docker</code>, Compose и buildx — а весит в разы меньше.\n\n<b>Что умеет:</b>\n• Контейнер стартует примерно за 2,5 мс — около 80× быстрее Docker Desktop\n• В простое VM засыпает через 60 с, демон занимает ~15 МБ\n• Локальные домены <code>&lt;name&gt;.kiri.local</code> с HTTPS\n• <code>kiri share 3000</code> — выставить порт или контейнер в интернет, как ngrok\n• Kubernetes одной командой, Linux-машины и окно с логами и терминалом; <code>kiri import</code> переносит всё из Docker Desktop или OrbStack\n\n💻 <b>Платформы:</b> Windows 10/11 (через WSL 2) · macOS 14+ · Linux\n⚡ <b>Установка:</b> <code>brew install --cask libracoder/kiri/kiri</code> или .msi / .dmg с runkiri.com/releases\n⭐ 13.5k · Rust · Apache-2.0\n\n#devtools #docker #windows #macos\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/libracoder/kiri/HEAD/docs/images/kiri-window.png"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/libracoder/kiri",
+  "created_at": "2026-11-26T10:41:22+03:00"
+}

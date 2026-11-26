@@ -1,0 +1,19 @@
+{
+  "repo": "JuneYaooo/rea-video",
+  "url": "https://github.com/JuneYaooo/rea-video",
+  "title": "rea-video — разбор любого ролика по кадрам для AI-агента",
+  "category": "ai-skill",
+  "text": "<b>🎬 rea-video — разбор любого ролика по кадрам для AI-агента</b>\n\nСкилл для Claude Code и Codex: даёшь видео — агент делит его на шоты и для каждого говорит, снято ли оно на камеру, сгенерировано AI или собрано кодом, и как это повторить. Находка для тех, кто делает рилсы и рекламу.\n\n<b>Что умеет:</b>\n• Живая съёмка: ракурсы, движение камеры, свет (12 схем со списком техники), цветокор\n• AI-видео: доказательства, восстановленный промпт для каждого шота и какую модель взять\n• Распознаёт аватаров с липсинком и что нужно для такого же\n• Отчёт в открытом формате VIDEO.md, который агенты читают по слоям\n• Подключи Gemini или Doubao — вердикты точнее, но работает и без них\n\n💻 <b>Платформы:</b> любая ОС с Claude Code или Codex (нужны ffmpeg и Python 3.10+)\n⚡ <b>Установка:</b> <code>claude plugin marketplace add JuneYaooo/rea-video</code>, затем <code>claude plugin install rea-video@rea-video</code>\n⭐ 13.5k · Python · Apache-2.0\n\n#ai_skill #claudecode #видео\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "video",
+      "url": "https://raw.githubusercontent.com/JuneYaooo/rea-video/HEAD/docs/cases/remake/outfit_compare.mp4"
+    },
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/JuneYaooo/rea-video/HEAD/docs/cases/remake/outfit.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/JuneYaooo/rea-video",
+  "created_at": "2026-11-26T14:41:08+03:00"
+}

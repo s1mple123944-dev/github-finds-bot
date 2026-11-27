@@ -1,0 +1,15 @@
+{
+  "repo": "yjid/kensaku",
+  "url": "https://github.com/yjid/kensaku",
+  "title": "Kensaku — мгновенный локальный поиск с OCR и MCP",
+  "category": "mcp",
+  "text": "<b>🔎 Kensaku — мгновенный поиск по всему компьютеру, даже по тексту на скриншотах</b>\n\nБесплатная open-source альтернатива встроенному поиску: находит файлы не только по имени, но и по содержимому и смыслу. Всё локально, без облака и телеметрии.\n\n<b>Что умеет:</b>\n• ~100 000 файлов за несколько миллисекунд, результаты обновляются по мере ввода\n• Читает PDF, Office, почту, электронные книги и 50+ форматов кода и данных\n• OCR: находит текст внутри скриншотов и картинок\n• Поиск по смыслу и предпросмотр по пробелу\n• MCP: Claude, Cursor и другие агенты могут искать по вашему индексу (только чтение)\n\n💻 <b>Платформы:</b> Windows · macOS · Linux\n⚡ <b>Установка:</b> <code>curl -fsSL https://github.com/yjid/kensaku/releases/latest/download/install.sh | sh</code> (на Windows — команда PowerShell из README)\n⭐ 1.9k · Rust · MIT\n\n#поиск #mcp #windows #macos\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/yjid/kensaku/HEAD/assets/hero.png"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/yjid/kensaku",
+  "created_at": "2026-11-27T14:39:52+03:00"
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "AienTech/dossier",
+  "url": "https://github.com/AienTech/dossier",
+  "title": "Dossier — свой ИИ-помощник для поиска работы",
+  "category": "self-hosted",
+  "text": "<b>💼 Dossier — свой ИИ-помощник для поиска работы</b>\n\nОдин профиль с опытом — и под каждую вакансию готовые резюме и сопроводительное письмо. Всё крутится на вашем сервере, данные остаются у вас.\n\n<b>Что умеет:</b>\n• Читает вакансию, показывает совпадение с профилем и пишет резюме и письмо только из ваших фактов\n• Доводит документы в чате, 12 тем резюме, экспорт в PDF\n• Трекер откликов от черновика до оффера\n• Ищет вакансии на LinkedIn, Indeed, Adzuna и среди стартапов YC\n• Любая модель: локально через Ollama / LM Studio или OpenAI-совместимый API, Anthropic, Mistral\n\n💻 <b>Платформы:</b> веб-интерфейс — любое устройство; сервер в Docker\n⚡ <b>Установка:</b> <code>docker compose up -d</code> (подробно — в README)\n⭐ 5.5k · TypeScript · AGPL-3.0\n\n#selfhosted #работа #ai\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/AienTech/dossier/HEAD/.github/images/demo.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/AienTech/dossier",
+  "created_at": "2026-11-27T21:40:06+03:00"
+}

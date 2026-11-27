@@ -1,0 +1,15 @@
+{
+  "repo": "ARahim3/DigUp",
+  "url": "https://github.com/ARahim3/DigUp",
+  "title": "DigUp — поиск по содержимому файлов",
+  "category": "app",
+  "text": "<b>🔎 DigUp — поиск по смыслу того, что внутри файлов</b>\n\nПомните фото, но не имя файла? DigUp ищет по содержимому: опишите словами, что ищете, — и он найдёт фото, страницу PDF или минуту в записи. Всё работает локально, без аккаунта и телеметрии.\n\n<b>Что умеет:</b>\n• «собака на пляже» — находит фото, «payment declined error» — скриншот\n• открывает видео на нужном моменте, подкаст — на нужной минуте\n• в PDF показывает нужную страницу, по желанию ищет и по коду\n• понимает 100+ языков: запрос на одном находит заметку на другом\n• работает на модели EmbeddingGemma 2, файлы никуда не уходят\n\n💻 <b>Платформы:</b> macOS (Apple Silicon) · Windows (beta) · Linux (beta)\n⚡ <b>Установка:</b> <code>brew install --cask arahim3/tap/digup</code> или .dmg / .exe / AppImage из релизов\n⭐ 6.6k · Swift · MIT\n\n#app #поиск #локальныйAI\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "animation",
+      "url": "https://raw.githubusercontent.com/ARahim3/DigUp/HEAD/docs/demo.gif"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/ARahim3/DigUp",
+  "created_at": "2026-11-27T10:41:05+03:00"
+}

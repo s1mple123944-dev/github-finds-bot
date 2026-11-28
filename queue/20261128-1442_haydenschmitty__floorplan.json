@@ -1,0 +1,19 @@
+{
+  "repo": "haydenschmitty/floorplan",
+  "url": "https://github.com/haydenschmitty/floorplan",
+  "title": "Floorplan — карта вашего приложения простым языком",
+  "category": "dev-tool",
+  "text": "<b>🗺 Floorplan — карта вашего приложения простым языком</b>\n\nПлагин для Claude Code и Codex: агент сканирует проект и рисует интерактивную карту — как всё устроено и что AI только что поменял. Выручит, если код писал в основном AI.\n\n<b>Что умеет:</b>\n• Карта: части, файлы, эндпоинты, экраны, запросы фронт → бэк и внешние сервисы\n• По-человечески: «принимает оплату картой», а не «обёртка Stripe API»\n• Health check: ключи в коде, открытые таблицы Supabase, эндпоинты без входа — с готовым фиксом\n• Recent work подсвечивает, что изменил AI, и объясняет зачем\n• Строка Ask: вопросы по коду через ваш Claude Code или Codex\n\n💻 <b>Платформы:</b> Claude Code и Codex, работает локально (Node 18+)\n⚡ <b>Установка:</b> <code>claude plugin marketplace add haydenschmitty/floorplan</code>, затем <code>claude plugin install floorplan@floorplan</code>\n⭐ 7.1k · JavaScript · MIT\n\n#devtools #claudecode #codex\n\n🔗 {link}",
+  "media": [
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/haydenschmitty/floorplan/HEAD/docs/images/ask.png"
+    },
+    {
+      "type": "photo",
+      "url": "https://raw.githubusercontent.com/haydenschmitty/floorplan/HEAD/docs/images/recent.png"
+    }
+  ],
+  "fallback_image": "https://opengraph.githubassets.com/1/haydenschmitty/floorplan",
+  "created_at": "2026-11-28T14:42:22+03:00"
+}

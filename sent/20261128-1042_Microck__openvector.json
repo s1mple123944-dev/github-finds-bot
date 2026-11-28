@@ -6,5 +6,7 @@
   "text": "<b>📐 OpenVector — растр в вектор: в браузере, на ПК и в терминале</b>\n\nНужно превратить PNG-логотип или рисунок в редактируемый вектор? OpenVector трассирует картинки прямо на вашем устройстве: веб-редактор работает во вкладке и никуда не загружает изображения.\n\n<b>Что умеет:</b>\n• автотрассировка PNG, JPEG, BMP, GIF и TIFF, ручные палитры, правка сегментации и удаление фона\n• экспорт в SVG, PDF, EPS, AI, DXF и EMF, плюс растр PNG/JPEG/BMP/TIFF\n• пакетная конвертация и сохранённые профили настроек\n• один движок на Rust — веб-редактор, десктоп, CLI и библиотека для Node.js\n• в браузере ничего ставить не нужно, аккаунт не нужен\n\n💻 <b>Платформы:</b> браузер — любое устройство · Windows · macOS · Linux · CLI через npm\n⚡ <b>Установка:</b> <code>npm install -g openvector</code>, релиз .exe / .dmg / AppImage или сразу <a href=\"https://openvector.app/editor/\">веб-редактор</a>\n⭐ 537 · Rust · MIT\n\n#cli #дизайн #svg\n\n🔗 {link}",
   "media": [],
   "fallback_image": "https://opengraph.githubassets.com/1/Microck/openvector",
-  "created_at": "2026-11-28T10:42:11+03:00"
+  "created_at": "2026-11-28T10:42:11+03:00",
+  "sent_at": "2026-11-28T07:42:23",
+  "message_id": 16
 }
